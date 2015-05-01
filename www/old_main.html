@@ -1,0 +1,1060 @@
+<html ng-app="SankaraEye">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    
+    <title>Sankara Eye Records</title>
+
+    <link href="css/ionic.css" rel="stylesheet">
+    <link href="css/ionic.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/ionic.bundle.js"></script>
+    <script src="js/ionic.bundle.min.js"></script>
+    <script src="js/ionic.min.js"></script>
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/angular/angular-animate.js"></script>
+<!--    <script src="js/angular/angular-sanitize.min.js"></script> -->
+    <script src="js/ionic-angular.js"></script>
+	
+    <script src="controller.js"></script> 
+   <script>
+var xmlHttp;
+
+
+function showHint(str)
+{
+	if (str.length==0){ 
+		document.getElementById("txtHint").innerHTML=""
+		return
+	}
+	xmlHttp=GetXmlHttpObject()
+	if (xmlHttp==null){
+		alert ("Browser does not support HTTP Request")
+		return
+	} 
+
+	// Fill in the url of the PHP script
+
+	var url = "schools.php"
+	url=url+"?q="+str
+	xmlHttp.onreadystatechange=stateChanged 
+	xmlHttp.open("GET",url,true)
+	xmlHttp.send(null)
+}
+
+function stateChanged() { 
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete"){ 
+		document.getElementById("txtHint").innerHTML=xmlHttp.responseText 
+	} 
+} 
+
+function GetXmlHttpObject(){ 
+	var objXMLHttp=null
+	if (window.XMLHttpRequest){
+		objXMLHttp=new XMLHttpRequest()
+	}
+	else if (window.ActiveXObject){
+		objXMLHttp=new ActiveXObject("Microsoft.XMLHTTP")
+	}
+	return objXMLHttp
+} 
+
+function showStudentHint(str)
+{
+	if (str.length==0){ 
+		document.getElementById("txtHint1").innerHTML=""
+		return
+	}
+	xmlHttp=GetXmlHttpObject()
+	if (xmlHttp==null){
+		alert ("Browser does not support HTTP Request")
+		return
+	} 
+
+	// Fill in the url of the PHP script
+
+	var url = "students.php"
+	url=url+"?q="+str
+	xmlHttp.onreadystatechange=studentStateChanged 
+	xmlHttp.open("GET",url,true)
+	xmlHttp.send(null)
+}
+
+function studentStateChanged() { 
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete"){ 
+		document.getElementById("txtHint1").innerHTML=xmlHttp.responseText 
+	} 
+} 
+
+
+
+</script> 
+
+ 
+  </head>
+
+  <body ng-controller="MainCtrl" class="main">
+  
+    <ion-nav-bar class="bar-positive">
+
+    </ion-nav-bar>
+             
+    <ion-nav-view></ion-nav-view>
+	
+<!-- Language Selection Div -->	
+	<script id="templates/main.html" type="text/ng-template">
+      <ion-view view-title="Select a Language">
+        <ion-content padding="true">
+
+			<button class="button button-full button-positive main" ng-click="ENGLISH()">
+				ENGLISH
+			</button>
+			<button class="button button-full button-positive main" ng-click="GUJARATI()" >
+				GUJARATI
+			</button>
+			<button class="button button-full button-positive main" ng-click="HINDI()">
+				HINDI
+			</button>
+			<button class="button button-full button-positive main" ng-click="KANNADA()" >
+				KANNADA
+			</button>
+			<button class="button button-full button-positive main" ng-click="MARATHI()">
+				MARATHI
+			</button>
+			<button class="button button-full button-positive main" ng-click="PUNJABI()" >
+				PUNJABI
+			</button>
+			<button class="button button-full button-positive main" ng-click="TAMIL()">
+				TAMIL
+			</button>
+			<button class="button button-full button-positive main" ng-click="TELUGU()" >
+				TELUGU
+			</button>
+			<button class="button button-full button-positive main" ng-click="URDU()">
+				URDU
+			</button>
+		
+        </ion-content>
+      </ion-view>
+    </script>	
+<!-- End language selection div -->	
+
+<!-- LOGIN div -->	
+	<script id="templates/sign-in.html" type="text/ng-template">
+      		<ion-view view-title="Log In">
+        		<ion-content>
+          			<form name="add_school" ng-submit="signIn(data)">
+          				<div class="list">
+            					<label class="item item-input">
+              						<span class="input-label">Username</span>
+              						<input type="text" ng-model="data.username">
+            					</label>
+            					<label class="item item-input">
+              						<span class="input-label">Password</span>
+              						<input type="password" ng-model="data.password">
+            					</label>
+          				</div>
+            				<button class="button button-block button-positive main"  name="submit_signIn" type="submit"> 
+						Log In 
+					</button>
+				</form>
+					<button class="button button-block button-positive main" ng-click="createAccount()">
+              					Create Account
+            				</button>
+					<button class="button button-block button-assertive main" ng-click="language()">
+              					Select Another Language
+            				</button>
+        		</ion-content>
+      		</ion-view>
+	</script>
+<!-- End LOGIN div -->
+
+<!-- Create Account div -->
+    <script id="templates/createAccount.html" type="text/ng-template">
+        <ion-view view-title="Create Account">
+            <ion-content>
+                <form name="create_account" ng-submit="createNewAccount(data)">
+                    <div class="list">
+                        <label class="item item-input">
+                            <span class="input-label">New Username</span>
+                            <input type="text" ng-model="data.new_username">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">New Password</span>
+                            <input type="password" ng-model="data.new_password">
+                        </label>
+                    </div>
+                    <button class="button button-block button-positive main"  name="submit_newAccount" type="submit">
+                        Create Account
+                    </button>
+                </form>
+                <button class="button button-block button-assertive main" ng-click="goSignIn()">
+                    Cancel
+                </button>
+            </ion-content>
+        </ion-view>
+	</script>
+<!-- End LOGIN div -->
+
+<!-- Tabs template -->
+    	<script id="templates/tabs.html" type="text/ng-template">
+      		<ion-view>
+        		<ion-tabs class="tabs-icon-top tabs-positive">
+          			<ion-tab title="Home" icon="ion-home" href="#/tab/home">
+            				<ion-nav-view name="home-tab"></ion-nav-view>
+          			</ion-tab>
+		  
+          			<ion-tab title="Tutorial" icon="ion-ios7-information" href="#/tab/tutorial">
+            				<ion-nav-view name="tutorial-tab"></ion-nav-view>
+          			</ion-tab>
+
+          			<ion-tab title="Log Out" icon="ion-log-out" href="#/sign-in">
+          			</ion-tab>
+
+        		</ion-tabs>
+      		</ion-view>
+    	</script>
+<!-- End tabs template -->
+	
+<!-- Search school div -->	
+
+	<script id="templates/home.html" type="text/ng-template">
+		<ion-view class="search-background" view-title="Sankara Eye Records">
+			<ion-header-bar id="header" type="bar-primary" hides-header>
+			</ion-header-bar>
+			
+			<ion-nav-buttons side="right">
+				<a class="button" ng-click="addSchoolProfile()">
+				<i class="icon ion-plus-round"></i>
+				</a>
+			</ion-nav-buttons>
+			<ion-content padding="true" has-tabs="true" has-header="true">
+
+				<div id="search-box" class="item-input-wrapper">
+					<i class="icon ion-ios7-search placeholder-icon"></i>
+					<input id="search-box" type="text"
+					onkeyup="showHint(this.value)"
+					class="item-input-wrapper" 
+					placeholder="Search School Name" 
+					ng-model="data.searchQuery" reset-field>
+				</div>
+				<div class="list" id="suggestions">
+					<span id="txtHint" ng-click="viewSchoolProfile()"> </span>
+                 
+                    
+<!--
+<div id="search-background">
+
+</div>
+-->
+				</div>
+			</ion-content>
+		</ion-view>
+	</script>
+<!-- End Search school div -->
+
+<!-- Search student div -->	
+
+
+    <script id="templates/search_students.html" type="text/ng-template">
+
+		<ion-view class="search-background" view-title="Search Students">
+
+			<ion-nav-buttons side="left">
+			
+				<a class="button" animation="slide-right-left" ng-click="viewSchoolProfile()">
+				
+				<i class="icon ion-arrow-left-c"></i> BACK
+				</a>
+				
+			</ion-nav-buttons>
+
+			<ion-header-bar id="header" type="bar-primary" hides-header>
+			</ion-header-bar>
+			
+			<ion-nav-buttons side="right">
+				<a class="button" ng-click="addStudentProfile()">
+				<i class="icon ion-plus-round"></i>
+				</a>
+			</ion-nav-buttons>
+			<ion-content padding="true" has-tabs="true" has-header="true">
+
+
+				<div id="search-box" class="item-input-wrapper">
+					<i class="icon ion-ios7-search placeholder-icon"></i>
+					<input id="search-box" type="text" 
+					onkeyup="showStudentHint(this.value)"
+					class="item-input-wrapper" 
+					placeholder="Search Students by Role Number" 
+					ng-model="data.searchQuery" reset-field>
+				</div>
+				<center class="instructions"> Role Number: Last Name, First Name </center> 
+				<div class="list" id="suggestions1">
+					<span id="txtHint1" ng-click="viewStudentProfile()"> </span>
+				</div>
+
+<!--
+                              
+			<div id="search-box" class="item-input-wrapper">
+					<i class="icon ion-ios7-search placeholder-icon"></i>
+					<input id="search-box" type="text" 
+					onkeyup="showHint(this.value, 2)"
+					class="item-input-wrapper" placeholder="Search Student" ng-model="data.searchQuery" reset-field>
+				</div>
+
+			<div class="list" id="suggestions">
+				<span id="txtHint"> </span>
+			</div>
+
+			<br/>
+			<div class="list" ng-init="get_students()">
+						<li class="item" ng-repeat="student in pagedItems" ng-click="viewStudentProfile({{student.lastname}})">{{student.lastname}}, {{student.firstname}}</li>
+			</div>
+-->
+
+	</ion-content>
+      </ion-view>
+    </script>
+<!-- End Search student div -->
+
+<!-- Add School Profile Template -->
+
+     <script id="templates/addSchoolProfile.html" type="text/ng-template" >
+      <ion-view title="Add School Profile" >
+        <ion-content has-header="true">
+          <form name="add_school" ng-submit="school_submit(data)">
+            <div class="item item-divider">
+				<label class="item item-input">
+					<input type="text" name="schoolname" placeholder="School Name" ng-model="data.schoolname"> 
+					 <button class="button button-icon icon ion-mic-a" ng-click="school_cancel()"></button> &nbsp &nbsp
+				</label>            
+			</div>
+
+            <label class="item item-input">
+              <input type="text" name="screening_date" placeholder="Date of Screening" ng-model="data.screening_date">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="headmaster" placeholder="Headmaster Name" ng-model="data.headmaster">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="address" placeholder="Screening Site Address" ng-model="data.address">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="phone" placeholder="Phone Number" ng-model="data.phone">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="cosponsor" placeholder="Co Sponsor Name" ng-model="data.cosponsor">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="cosponsor_phone" placeholder="Co Sponsor Phone Number" ng-model="data.cosponsor_phone">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+                <input type="text" name="person_in_charge" placeholder="Person in Charge Name" ng-model="data.person_in_charge">
+        <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+            <label class="item item-input">
+              <input type="text" name="person_in_charge_phone" placeholder="Person in Charge Phone Number" ng-model="data.person_in_charge_phone">
+		 <button class="button button-icon icon ion-mic-a"></button> &nbsp
+            </label>
+
+            <button class="button button-full button-positive"  name="submit_school" ng_show='add_sch' type="submit">Add School</button>
+          </form>
+	    <button class="button button-full button-assertive" ng-click="school_cancel()">Cancel </button>	
+        </ion-content>
+      </ion-view>
+    </script>
+	
+<!-- End School Profile Template -->
+
+<!-- View School Profile Template -->
+
+
+    <script id="templates/viewSchoolProfile.html" type="text/ng-template" ng-init="get_school()">
+        <ion-view title="School Profile">
+         <ion-nav-buttons side="left">
+         
+       		<a class="button" animation="slide-right-left" ng-click="home()">
+       		
+        	<i class="icon ion-arrow-left-c"></i> BACK
+      		</a>
+      		
+         </ion-nav-buttons>
+
+
+         <ion-nav-buttons side="right">
+         	<div class="buttons">
+       		<a class="button" ng-click="">
+        	EDIT
+      		</a>
+      		</div>
+         </ion-nav-buttons>
+
+
+        <ion-content class="padding" has-header="true" ng-repeat="school in pagedItems">
+	     	<center> <h1 id="profile-name">{{school.schoolname}}</h1> </center>
+		<a class="item item-icon-left" id="student-list" ng-click="search_students()">
+			<i class="icon ion-android-contacts"></i>
+				View {{school.schoolname}} Student List
+			<i class="ion-arrow-right-b"></i>
+		</a>
+		<br/>
+	        <ion-list class="main">
+	        <ion-item>
+	            <h2 id="category-title">SCHOOL NAME:</h2>
+	            <h3>{{school.schoolname}}</h3><br>
+	        </ion-item>
+	        <ion-item>
+	            <h2 id="category-title">DATE OF SCREENING:</h2>
+	  			<h3>{{school.screening_date}}</h3><br>    
+	        </ion-item>
+	        <ion-item>	  			     
+	            <h2 id="category-title">HEADMASTER NAME:</h2>
+	             <h3>{{school.headmaster}}	</h3><br> 
+	        </ion-item>
+	        <ion-item>	                      
+	            <h2 id="category-title">SCREENING SITE ADDRESS:</h2>
+	             <h3>{{school.address}}	</h3> <br>   
+	        </ion-item>
+	        <ion-item>	               
+	            <h2 id="category-title">PHONE NUMBER:</h2>
+	             <h3>{{school.phone}}</h3><br>
+	        </ion-item>
+	        <ion-item>	             
+	            <h2 id="category-title">CO SPONSOR NAME:</h2>
+	             <h3>{{school.cosponsor}}</h3> <br>     
+	        </ion-item>
+	        <ion-item>	                  
+	            <h2 id="category-title">CO SPONSOR PHONE NUMBER:</h2>
+	            <h3>{{school.cosponsor_phone}}</h3><br>  
+	        </ion-item>
+	        <ion-item>
+                <h2 id="category-title">PERSON IN CHARGE:</h2>
+                <h3>{{school.person_in_charge}} </h3><br>
+	        </ion-item>
+	        <ion-item>
+	            <h2 id="category-title">PERSON IN CHARGE PHONE NUMBER:</h2>
+	             <h3>{{school.person_in_charge_phone}} </h3><br>
+	        </ion-item>
+	      	</ion-list>
+	      	 <button class="button button-full button-assertive" ng-click="delete()">Delete School</button>
+        </ion-content>
+        </ion-view>
+    </script> 
+
+
+
+<!-- End School Profile Template -->
+
+
+
+
+
+<!-- Add Student Profile Template -->
+     <script id="templates/addStudentProfile.html" type="text/ng-template">
+      <ion-view title="Student Profile" >
+
+         <ion-nav-buttons side="left">
+         
+       		<a class="button" animation="slide-right-left" ng-click="search_students()">
+       		
+        	<i class="icon ion-arrow-left-c"></i> BACK
+      		</a>
+      		
+         </ion-nav-buttons>
+
+        <ion-content has-header="true">
+		
+          <form name="add_student" ng-submit="student_submit(data)">
+
+		<div id="profile-bg"></div>
+		<div id="content">
+		     <div id="profile-info">
+			<center> <img id="profile-image" src="default_profile.jpg"> </center>
+		     </div>
+		</div>
+
+			<label class="item item-input">
+				<input type="text" name="firstname" placeholder="First Name" ng-model="data.firstname">
+			</label>
+			<label class="item item-input">
+				<input type="text" name="lastname" placeholder="Last Name" ng-model="data.lastname">
+			</label>
+
+			<div class="item item-divider">
+				<center> Screening Site </center>
+			</div>
+			<div class ="list">
+				<label class="item item-radio">
+					<input type="radio" ng-model="data.screening_site" ng-value="'Camp'">
+					<div class="item-content">
+						Camp
+					</div>
+					<i class="radio-icon ion-checkmark"></i>
+				</label>
+				<label class="item item-radio">
+					<input type="radio" ng-model="data.screening_site" ng-value="'School'">
+					<div class="item-content">
+						School
+					</div>
+					<i class="radio-icon ion-checkmark"></i>
+				</label>
+				<label class="item item-radio">
+					<input type="radio" ng-model="data.screening_site" ng-value="'Anganwadi'">
+					<div class="item-content">
+						Anganwadi
+					</div>
+					<i class="radio-icon ion-checkmark"></i>
+				</label>
+			</div>
+
+
+<!-- Accordion List DIV -->	
+			<div>
+			  <ion-item class="item-stable"
+						ng-click="toggleGroup('personal')"
+						ng-class="{active: isGroupShown('personal')}">
+				  <i class="icon" ng-class="isGroupShown('personal') ? 'ion-minus' : 'ion-plus'"></i>
+				&nbsp;
+				<b> Personal Information </b>
+			  </ion-item>
+			  
+			  <ion-item class="item-accordion"
+						ng-show="isGroupShown('personal')">
+
+				<div class="item item-divider">
+					<center> Gender </center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.gender" ng-value="'Male'">
+						<div class="item-content">
+							Male
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.gender" ng-value="'Female'">
+						<div class="item-content">
+							Female
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+						
+				<label class="item item-input">
+				  <input type="text" placeholder="Birthdate" ng-model="data.birth_date">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Role Number" ng-model="data.role_no">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Class" ng-model="data.class">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Section" ng-model="data.section">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Teacher Name" ng-model="data.teacher">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="School Name" ng-model="data.school">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Parent's Name" ng-model="data.parent_name">
+				</label>
+				
+			  </ion-item>
+
+			  <ion-item class="item-stable"
+						ng-click="toggleGroup('primary')"
+						ng-class="{active: isGroupShown('primary')}">
+				  <i class="icon" ng-class="isGroupShown('primary') ? 'ion-minus' : 'ion-plus'"></i>
+				&nbsp;
+				<b> Primary Screening </b>
+			  </ion-item>
+			  
+			  <ion-item class="item-accordion"
+						ng-show="isGroupShown('primary')">
+				<label class="item item-input">
+					<input type="text" placeholder="Date of Primary Screening" ng-model="data.screen_date">
+					<i class="icon ion-calendar placeholder-icon"></i> &nbsp &nbsp &nbsp
+				</label>
+				<br/>
+				<div class="item item-divider">
+					<center> Primary Screening By </center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.screened_by" ng-value="'Teacher'">
+						<div class="item-content">
+							Teacher
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.screened_by" ng-value="'Volunteer Screener'">
+						<div class="item-content">
+							Volunteer Screener
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.screened_by" ng-value="'Sankara Team'">
+						<div class="item-content">
+							Sankara Team
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+				
+				<div class="item item-divider">
+					<center> Primary Screening Diagnosis <br/> Regarding Vision </center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.diagnosis" ng-value="'Normal'">
+						<div class="item-content">
+							Normal
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.diagnosis" ng-value="'Defective'">
+						<div class="item-content">
+							Defective
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+
+			  </ion-item>
+			  
+			  <ion-item class="item-stable"
+						ng-click="toggleGroup('secondary')"
+						ng-class="{active: isGroupShown('secondary')}">
+				  <i class="icon" ng-class="isGroupShown('Secondary') ? 'ion-minus' : 'ion-plus'"></i>
+				&nbsp;
+				<b> Secondary Screening </b>
+			  </ion-item>
+			  
+			  <ion-item class="item-accordion"
+						ng-show="isGroupShown('secondary')">
+
+				<label class="item item-input">
+				  <input type="text" placeholder="Date of Secondary Screening" ng-model="data.secondary_date">
+				  <i class="icon ion-calendar placeholder-icon"></i> &nbsp &nbsp &nbsp
+				</label>
+
+				<br/>
+
+				<div class="item item-divider">
+					<center>1. Depth Perception</center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.depth_perception" ng-value="'Adequate'">
+						<div class="item-content">
+							Adequate
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.depth_perception" ng-value="'Inadequate'">
+						<div class="item-content">
+							Inadequate
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+				<div class="item item-divider">
+					<center>2. Muscle Imbalance</center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.muscle_imbalance" ng-value="'Absent'">
+						<div class="item-content">
+							Absent
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.muscle_imbalance" ng-value="'Present'">
+						<div class="item-content">
+							Present
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+				<div class="item item-divider">
+					<center>3. Colour Vision</center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.colour_vision" ng-value="'Normal'">
+						<div class="item-content">
+							Normal
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.colour_vision" ng-value="'Deficient'">
+						<div class="item-content">
+							Deficient
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+				<div class="item item-divider">
+					<center>4. Squint</center>
+				</div>
+				<div class ="list">
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.squint" ng-value="'Absent'">
+						<div class="item-content">
+							Absent
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+					<label class="item item-radio">
+						<input type="radio" ng-model="data.squint" ng-value="'Present'">
+						<div class="item-content">
+							Present
+						</div>
+						<i class="radio-icon ion-checkmark"></i>
+					</label>
+				</div>
+			  </ion-item>
+
+			  <ion-item class="item-stable"
+						ng-click="toggleGroup('right')"
+						ng-class="{active: isGroupShown('right')}">
+				  <i class="icon" ng-class="isGroupShown('right') ? 'ion-minus' : 'ion-plus'"></i>
+				&nbsp;
+				<b> Right Eye </b>
+			  </ion-item>
+			  
+			  <ion-item class="item-accordion"
+						ng-show="isGroupShown('right')">
+				<label class="item item-input">
+				  <input type="text" placeholder="Visual Acuity" ng-model="data.va_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Anterior Segment" ng-model="data.as_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Ocular Movement" ng-model="data.om_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Fundus" ng-model="data.fundux_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="I.O.P." ng-model="data.iop_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Duct" ng-model="data.duct_r">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Amblyopia" ng-model="data.amblyopia_r">
+				</label>
+
+				<div class="range">
+				  <i class="icon ion-arrow-left-b"></i>
+				  <input type="range" name="volume" ng-model="data.volume">
+				  <i class="icon ion-arrow-right-b"></i>
+				</div>
+				<p>Glass Prescription : {{data.volume}}</p>
+			  </ion-item>
+
+
+			  <ion-item class="item-stable"
+						ng-click="toggleGroup('left')"
+						ng-class="{active: isGroupShown('left')}">
+				  <i class="icon" ng-class="isGroupShown('left') ? 'ion-minus' : 'ion-plus'"></i>
+				&nbsp;
+				<b> Left Eye </b>
+			  </ion-item>
+			  <ion-item class="item-accordion"
+						ng-show="isGroupShown('left')">
+				<label class="item item-input">
+				  <input type="text" placeholder="Visual Acuity" ng-model="data.va_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Anterior Segment" ng-model="data.as_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Ocular Movement" ng-model="data.om_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Fundus" ng-model="data.fundux_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="I.O.P." ng-model="data.iop_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Duct" ng-model="data.duct_l">
+				</label>
+				<label class="item item-input">
+				  <input type="text" placeholder="Amblyopia" ng-model="data.amblyopia_l">
+				</label>
+				<div class="range">
+				  <i class="icon ion-arrow-left-b"></i>
+				  <input type="range" name="volume" ng-model="data.volume">
+				  <i class="icon ion-arrow-right-b"></i>
+				</div>
+				<p>Glass Prescription : {{data.volume}}</p>
+			  </ion-item>
+
+			<div class="item item-divider">
+				<center> Notes </center>
+			</div>
+
+			<label class="item item-input">
+			  <input type="text" style="height:100px" ng-model="data.notes">
+			</label>
+			  			  
+			  
+			</div>
+
+			
+<!-- End Accordion List Div -->
+			<br/>
+            <button class="button button-full button-positive"  name="submit_student" type="submit">Add Student</button>
+          </form>
+	    <button class="button button-full button-assertive" ng-click="cancel()">Cancel</button>
+
+        </ion-content>
+      </ion-view>
+    </script>
+<!-- End Student Profile Template -->
+
+<!-- View Student Profile Template -->
+     <script id="templates/viewStudentProfile.html" type="text/ng-template" ng-init="get_student()">
+      <ion-view title="View Student Profile">
+         <ion-nav-buttons side="left">
+         
+       		<a class="button" animation="slide-right-left" ng-click="search_students()">
+       		
+        	<i class="icon ion-arrow-left-c"></i> BACK
+      		</a>
+      		
+         </ion-nav-buttons>
+
+         <ion-nav-buttons side="right">
+         	<div class="buttons">
+       		<a class="button" ng-click="">
+        	EDIT
+      		</a>
+      		</div>
+         </ion-nav-buttons>
+
+        <ion-content has-header="true" ng-repeat="info in student_info">
+
+	<div id="profile-bg"></div>
+	  <div id="content">
+	    <div id="profile-info">
+	      <img id="profile-image" src="default_profile.jpg">
+	      <h3 id="profile-name">{{ info.firstname }} {{ info.lastname }}</h3>
+        </div>
+
+	<ion-list class="main">
+		<ion-item>
+			 <h2 id="category-title">  Role Number  </h2>
+		  {{ info.role_no }}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Age </h2>
+		  {{ info.age}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Birth Date </h2>
+		  {{ info.birth_date}}/{{ info.birth_month }}/{{ info.birth_year }}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Class </h2>
+		  {{ info.class}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Section </h2>
+		  {{ info.section}}
+		</ion-item>		 
+		<ion-item>
+			 <h2 id="category-title">  Teacher </h2>
+		  {{ info.teacher}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  School </h2>
+		  {{ info.school}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Demographic </h2>
+		  {{ info.demographic}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Parent </h2>
+		  {{ info.parent_name}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Address </h2>
+		  {{ info.street }}, {{ info.locality }}, {{ info.town }}, {{ info.postcode }}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Phone </h2>
+		  {{ info.phone}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Accompanied By </h2>
+		  {{ info.accompanied_by}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Primary Screen Date </h2>
+		  {{ info.screen_month }}/{{ info.screen_date}}/{{ info.screen_year }}
+		</ion-item>		 
+		<ion-item>
+			 <h2 id="category-title">  Primary Screening By </h2>
+		  {{ info.screened_by}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Primary Screening Diagnosis </h2>
+		  {{ info.diagnosis}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Secondary Date </h2>
+		  {{ info.secondary_month }}/{{ info.secondary_date }}/{{ info.secondary_year }}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Depth Perception </h2>
+		  {{ info.depth_perception}}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Colour Vision </h2>
+		  {{ info.colour_vision }}
+		</ion-item>
+		<ion-item>
+			 <h2 id="category-title">  Squint </h2>
+		  {{ info.squint }}
+		</ion-item>
+
+		<ion-item class="item-stable"
+			  ng-click="toggleGroup('right')"
+			  ng-class="{active: isGroupShown('right')}">
+			  <i class="icon" ng-class="isGroupShown('right') ? 'ion-minus' : 'ion-plus'"></i>
+			  &nbsp;
+			  <b> Right Eye </b>
+		</ion-item>
+			  
+		<ion-item class="item-accordion"
+			  ng-show="isGroupShown('right')">
+
+			      <ion-item>
+				      <h2 id="category-title">  Visual Acuity</h2>
+				{{ info.va_r}}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Anterior Segment </h2>
+				{{ info.as_r }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Ocular Movement </h2>
+				{{ info.om_r}}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Fundus </h2>
+				{{ info.fundux_r }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  I.O.P. </h2>
+				{{ info.iop_r }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Duct </h2>
+				{{ info.duct_r}}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Amblyopia </h2>
+				{{ info.amblyopia_r }}
+			      </ion-item>
+		</ion-item>
+
+		<ion-item class="item-stable"
+			  ng-click="toggleGroup('left')"
+			  ng-class="{active: isGroupShown('left')}">
+			  <i class="icon" ng-class="isGroupShown('left') ? 'ion-minus' : 'ion-plus'"></i>
+			  &nbsp;
+			  <b> Left Eye </b>
+		</ion-item>
+			  
+		<ion-item class="item-accordion"
+			  ng-show="isGroupShown('left')">
+
+			      <ion-item>
+				      <h2 id="category-title">  Visual Acuity</h2>
+				{{ info.va_l}}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Anterior Segment </h2>
+				{{ info.as_l }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Ocular Movement </h2>
+				{{ info.om_l }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Fundus </h2>
+				{{ info.fundux_l }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  I.O.P. </h2>
+				{{ info.iop_l }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Duct </h2>
+				{{ info.duct_l }}
+			      </ion-item>
+			      <ion-item>
+				      <h2 id="category-title">  Amblyopia </h2>
+				{{ info.amblyopia_l }}
+			      </ion-item>
+		</ion-item>
+		<ion-item>
+			<h2 id="category-title">  Notes </h2>
+			{{ info.notes }}
+		</ion-item>
+
+
+	</ion-list>
+
+
+<!--
+	<table border=1  class="table table-striped table-condensed table-hover">	      	
+            <tbody ng-init="get_student()">
+            	<tr ng-repeat="school in pagedItems">
+			      	<td>{{ school.role_no }}</td>
+					<td>{{ school.lastname }}</td>
+					<td>{{ school.headmaster }}</td>
+				</tr>    
+            </tbody>
+	  </table>
+-->
+	<br/><br/>
+	  <button class="button button-full button-assertive" ng-click="cancel()">Cancel </button>
+         
+
+        </ion-content>
+      </ion-view>
+    </script>
+	
+<!-- End Student Profile Template -->
+
+
+
+<!-- Tutorial Template -->
+
+<!-- End Tutorial Template -->
+  </body>
+</html>

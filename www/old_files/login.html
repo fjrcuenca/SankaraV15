@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/font-awesome-4.2.0/css/font-awesome.min.css" />
+        <title>Sankara Eye Records</title>
+    </head>
+    <body>
+		<img id="logo" src="/img/logo.png">
+		<h1 id="main-title"> Sankara Eye <br> Records </h1>
+		
+		<br/>
+		
+        <div class="login">
+		<form method="post" action="">
+			<label for="uname"><h2>Username:</h2></label>
+			<input type="text" name="uname" id="uname" data-clear-btn="true">
+			<label for="password"><h2>Password:</h2></label>
+			<input type="text" name="password" id="password" data-clear-btn="true">
+
+			<br/><br/>
+
+			<div class="ui-grid-b">
+				<div class="ui-block-a">
+					<input class="main-btn" type="submit"  data-mini="true" data-icon="arrow-r" data-iconpos="right" onclick="authorize()" value="Login">
+					<input class="main-btn" type="submit"  data-mini="true" data-icon="arrow-r" data-iconpos="right" onclick="createLogin()" value="Create Login">
+				</div>
+			</div>
+		</form>
+		
+		<br/><br/>
+		
+		<button class="main-btn" onclick="window.location.href='main.html';">Temporary Button</button>
+
+		<br/><br/>
+		
+        </div>
+        
+		<button class="back-btn" id="med-btn" onclick="window.location.href='index.html';"> <i class="fa fa-undo"></i> &nbsp Back</button>
+        
+		<script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

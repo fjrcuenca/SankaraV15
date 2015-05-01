@@ -1,0 +1,35 @@
+<html ng-app="SankaraIndex">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Ionic List Directive</title>
+   
+    <link href="css/ionic.min.css" rel="stylesheet">
+    <script src="js/ionic.bundle.js"></script>
+  </head>
+
+  <body ng-controller="MyCtrl">
+    <ion-nav-view>
+      <ion-view title="My View">
+      <ion-content>
+
+	  <h2> Select a Language </h2>
+	  
+      <ion-list>
+
+        <ion-item on-release="test()">
+          English
+        </ion-item>
+		<ion-item>
+			Punjabi
+        </ion-item>
+
+      </ion-list>
+
+    </ion-content>
+      </ion-view>
+    </ion-nav-view>
+    
+      
+  </body>
+</html>

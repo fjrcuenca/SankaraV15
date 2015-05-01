@@ -1,0 +1,48 @@
+				School Name<br/>
+				<input type="text" name="school-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/> <br/>
+				Date of Screening<br/>
+				<input type="text" name="date-of-screening"> &nbsp <i class="fa fa-calendar fa-2x"></i> <br/><br/>
+				Headmaster Name<br/>
+				<input type="text" name="headmaster-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				Screening Site Address<br/>
+				<input type="text" name="screening-site-address"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				Phone Number<br/>
+				<input type="text" name="headmaster-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				Co Sponsor<br/>
+				<input type="text" name="headmaster-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				Co Sponsor Contact Number<br/>
+				<input type="text" name="headmaster-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				Person in Charge Contact Number<br/>
+				<input type="text" name="headmaster-name"> &nbsp <i class="fa fa-microphone fa-2x"></i> <br/><br/>
+				
+				
+						<div style="display: block" class="languages" id="view-edit-tutorial">
+			<!-- change onclick locations -->
+			<button class="main-btn" id="big-btn" onclick="toggle_visibility('view-edit-tutorial', 'search-school'); ">View/Edit</button> <br/><br/>
+			<button class="main-btn" id="big-btn" onclick="window.location.href='/view-edit.html';">Tutorial</button> <br/>
+		</div>
+		
+		<div style="display: none" class="languages" id="search-school">
+			<button class="main-btn" id="big-btn" onclick="window.location.href='/search-school.html';">Search School</button> <br/><br/>
+			<button class="main-btn" id="big-btn" onclick="window.location.href='/add-school.php';">Add New School</button> <br/>
+		</div>
+		
+		PHP
+		
+					error_reporting(E_ALL);
+				$db_host = "dbserver.engr.scu.edu:3306";
+				$db_user = "sankara";
+				$db_pass = "Fig2014";
+
+				$conn = mysql_connect($db_host, $db_user, $db_pass)
+					or die("Connection failed");
+				$dbname = "sankara_web";
+				mysql_select_db($dbname);
+				$query = "SELECT * FROM login";
+				$result = mysqli_query($conn, $query);
+				
+				while($row = mysqli_fetch_array($result)) {
+						echo $row['username'] . "<br>\n";
+				}       
+
+				mysqli_close($conn);
